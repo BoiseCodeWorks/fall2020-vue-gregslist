@@ -10,6 +10,7 @@ const routes = [
     path: '/cars',
     name: 'Cars',
     component: Cars
+    //beforeEnter: authGuard
   },
   {
     path: '/cars/:id',
@@ -25,5 +26,15 @@ const routes = [
 const router = new VueRouter({
   routes
 })
+
+// router.beforeEach((to, from, next) => {
+//   if (from.name == "Cars") {
+//     if (window.confirm("are you sure?")) {
+//       next()
+//     }
+//     return
+//   }
+//   next()
+// })
 
 export default router

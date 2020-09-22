@@ -1,8 +1,9 @@
 <template>
   <main id="cars" class="container-fluid">
     <div class="row my-3">
+      <button class="btn btn-success" @click="showForm = true" v-if="!showForm">Add Car</button>
       <div class="col" id="form">
-        <form @submit.prevent="createCar" class="form-inline">
+        <form @submit.prevent="createCar" class="form-inline" v-if="showForm">
           <div class="form-group p-1">
             <label class="mr-1" for="make">Make</label>
             <input
@@ -72,6 +73,7 @@
             />
           </div>
           <button type="submit" class="btn btn-outline-success">Add Car</button>
+          <button type="button" class="btn btn-danger" @click="clearForm" v-if="showForm">Cancel</button>
         </form>
       </div>
     </div>
@@ -90,6 +92,7 @@ export default {
   },
   data() {
     return {
+      showForm: false,
       newCar: {}
     }
   },
@@ -105,7 +108,24 @@ export default {
       for (let key in this.newCar) {
         this.newCar[key] = null
       }
+      this.showForm = false;
 
+    },
+    clearForm() {
+      this.showForm = false;
+      this.newCar = {}
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    if (!this.showForm) {
+      next()
+      return
+    }
+    const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+    if (answer) {
+      next()
+    } else {
+      next(false)
     }
   },
   components: {
